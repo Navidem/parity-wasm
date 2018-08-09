@@ -306,6 +306,9 @@ impl Module {
 			if let Some(relocation_section) = {
 				if let Section::Custom(ref custom) = *section {
 					if custom.name().starts_with("reloc.") {
+						if custom.name().starts_with("reloc..") {
+							continue;
+						}
 						let mut rdr = io::Cursor::new(custom.payload());
 						let reloc_section = match RelocSection::deserialize(custom.name().to_owned(), &mut rdr) {
 							Ok(reloc_section) => reloc_section,
